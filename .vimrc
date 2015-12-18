@@ -36,7 +36,7 @@ Plugin 'kristijanhusak/vim-hybrid-material'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'mbbill/undotree'
-"Plugin 'dhruvasagar/vim-vinegar'
+Plugin 'dhruvasagar/vim-vinegar'
 Plugin 'tpope/vim-fugitive'
 
 " All of your Plugins must be added before the following line
