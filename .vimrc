@@ -56,7 +56,7 @@ set smartcase
 "set incsearch
 set hidden
 set hlsearch
-noremap <F5> :set hls!<CR>
+"noremap <F5> :set hls!<CR>
 "set autoindent
 "set smartindent
 set cindent
@@ -101,7 +101,7 @@ endfunction
 
 au FuncUndefined FF* source ~/.vim/findfile.vim
 "map <C-E> :call FF("")<CR>
-map <C-A> :call AIH()<CR>
+"map <C-A> :call AIH()<CR>
 
 
 "source ~/.vim/plugin/bufexplorer.vim
@@ -165,8 +165,8 @@ noremap <F6> :YRShow<CR>
 set cino=g2,h2,i0,(0
 
 " map indents
-map! <F7> <Esc>vaB=%
-nmap <F7> <Esc>vaB=%
+"map! <F7> <Esc>vaB=%
+"nmap <F7> <Esc>vaB=%
 
 " replace 0th yanked word with current word
 "map S diw"0p
@@ -281,15 +281,51 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 "let g:airline#extensions#tabline#fnamemod = '.'
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+set laststatus=2
 
 "ctrlp
+let g:ctrlp_max_files = 10000
+"let g:ctrlp_match_window = 'bottom,order:ttb'  
 let g:ctrlp_switch_buffer = 0   "hopefully always open in same window
 let g:ctrlp_follow_symlinks = 1 "follow symlinks but ignore looped
-"let g:ctrlp_working_path_mode = 'wa' "search from either current directory or the closest .git file to CWD? not sure
-let g:ctrlp_working_path_mode = 0 "search from either current directory or the closest .git file to CWD? not sure
+let g:ctrlp_working_path_mode = 'wra' "search from either current directory or the closest .git file to CWD? not sure
+"let g:ctrlp_working_path_mode = 0 "search from either current directory or the closest .git file to CWD? not sure
+"let g:ctrlp_user_command = 'ag %s -l -U --hidden -g ""'
+nnoremap <leader>r :CtrlPClearCache <CR>
+if executable('ag')
+  " Use Ag over Grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l -U --hidden --nocolor -g ""'
+endif
+let g:ctrlp_root_markers = ['src/']
+
+"ctrlp function
+"delc Cb
+"command Cb :CtrlPBookmarkDirAdd <CR> | "1" <CR>
+"nmap cb :CtrlPBookmarkDirAdd <CR>test<CR>
+"function! CtrlPAutoBookmark(number)
+"    let number = a:number
+"    echo number
+""    execute "normal :CtrlPBookmarkDirAdd \<c-u>".number."\<cr>"
+""    execute "nmap <leader>".number." :CtrlPBookmarkDir <CR>".number."<CR>"
+"    exe ":CtrlPBookmarkDirAdd" | echo "theend"
+""        nnoremap <leader>{number} :CtrlPBookmarkDir<CR>{g:Cb1}<CR>
+"endfunction
+"
+"function! CtrlPAutoBookmarkRead(number)
+"    let number = a:number
+"    let name = "g:Cb".number
+""    execute "CtrlPBookmarkDir<CR>".{name}."<CR>"
+""    execute "normal! :CtrlPBookmarkDir\<cr>".{name}."\<cr>"
+"    execute "normal :CtrlPBookmarkDir\<cr>".{name}."\<cr>"
+"endfunction
 
 
-
+"let g:ctrlp_prompt_mappings = {
+"      \ 'PrtClearCache()':      ['<c-q>'],
+"      \ }
 "exit out of insert mode speed
 set timeoutlen=1000 ttimeoutlen=0
 
@@ -318,7 +354,8 @@ set undodir=~/.vim/undodir
 set undofile
 set undolevels=1000 "maximum number of changes that can be undone
 set undoreload=10000 "maximum number lines to save for undo on a buffer reload
- 
+
+
 "function! Todo()
 "    let tomorrow = /    TT\>/ y  
 "    echo tomorrow
