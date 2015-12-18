@@ -36,7 +36,8 @@ Plugin 'kristijanhusak/vim-hybrid-material'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'mbbill/undotree'
-Plugin 'dhruvasagar/vim-vinegar'
+"Plugin 'dhruvasagar/vim-vinegar'
+Plugin 'tpope/vim-fugitive'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -81,7 +82,7 @@ set so=0
 
 "colors gruvbox
 "colors zenburn
-autocmd BufEnter * lcd %:p:h
+"autocmd BufEnter * lcd %:p:h
 
 " This autocmd and function is for updating NERDTree whenever the Buffer is
 " switched, it finds the file in the NERDTree window and then switches focus
@@ -103,6 +104,10 @@ au FuncUndefined FF* source ~/.vim/findfile.vim
 "map <C-E> :call FF("")<CR>
 "map <C-A> :call AIH()<CR>
 
+"fugitive
+"autocmd BufReadPost fugitive://* set bufhidden=delete
+"" Unset 'list' in :Gstatus window (which usually contains tab characters).
+"autocmd BufReadPost .git/index set nolist
 
 "source ~/.vim/plugin/bufexplorer.vim
 "let g:bufExplorerSplitBelow = 1
@@ -221,7 +226,7 @@ function! LoadCscope()
     set cscopeverbose
   endif
 endfunction
-au BufEnter /* call LoadCscope()
+"au BufEnter /* call LoadCscope()
 "inoremap <Tab> <C-R>=SuperCleverTab()<cr>
 
 "Commands by Jon
