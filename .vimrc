@@ -138,6 +138,7 @@ let g:syntastic_check_on_wq = 0
 set background=dark
 let g:hybrid_use_Xresources = 1
 let g:gruvbox_contrast_dark = 'hard'
+"let g:gruvbox_italic=1
 "let g:colorsbox_contrast_dark = 'medium'
 colo gruvbox
 "set csprg=/afs/rchland.ibm.com/usr6/pbarrett/public/bin/run_cscope-vim
@@ -362,7 +363,7 @@ endfunction
 nnoremap ,, :call ToggleSideEffects()<CR>
 
 "undo history
-set undodir=~/.vim/undodir
+set undodir=$HOME/.vim/undodir
 set undofile
 set undolevels=1000 "maximum number of changes that can be undone
 set undoreload=10000 "maximum number lines to save for undo on a buffer reload
