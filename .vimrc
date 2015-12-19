@@ -256,11 +256,18 @@ let Tlist_Show_One_File = 1
 nnoremap <silent> <C-Tab> :TlistToggle<CR> 
 "gets rid of unable to open swap file error
 "set directory=.,$TEMP
-set backupdir=/home/jfouk/.vimswp//
-set directory=/home/jfouk/.vimswp//
+
+"allow swp files in that dir
+set backupdir=$HOME/.vimswp//
+set directory=$HOME/.vimswp//
 
 set mouse=a
-set clipboard=unnamedplus
+if has("mac")
+    set clipboard=unnamed
+else
+    set clipboard=unnamedplus
+endif
+
 set guioptions-=T  "remove toolbar
 map <A-o> <plug>NERDTreeTabsToggle<CR>
 "nnoremap <A-u> :GundoToggle<CR>
