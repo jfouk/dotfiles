@@ -1,3 +1,4 @@
+#!/bin/sh
 #init script
 
 #check os
