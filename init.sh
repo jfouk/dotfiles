@@ -60,6 +60,13 @@ elif [ "$OS" == "Linux" ]; then
     sudo yum install the_silver_searcher
 fi
 
+
+#---------------- General Installs ----------------
+
+if [ ! -f $HOME/.tmux/plugins/tpm ]; then
+    echo "Installing Tmux Plugin Manager"
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi
 #installs if linux
 
 #vundle install
