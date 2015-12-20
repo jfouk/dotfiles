@@ -1,8 +1,9 @@
 #!/bin/sh
 #init script
 
+#path to where all these files are
+SETUP=$PWD
 #check os
-
 case "$(uname -s)" in
     Darwin)
         OS='Mac OS X'
@@ -27,13 +28,13 @@ fi
 #link config files to home directory if files do not already exist
 if [ ! -f $HOME/.tmux.conf ]; then
     echo "Linking tmux config"
-    ln -s ~/Development/Setup/dotfiles/.tmux.conf ~/.tmux.conf
+    ln -s $SETUP/tmux/.tmux.conf $HOME/.tmux.conf
 fi
 if [ ! -f $HOME/.vimrc ]; then
     echo "Linking vimrc"
-    ln -s ~/Development/Setup/dotfiles/.vimrc ~/.vimrc
+    ln -s $SETUP/vim/.vimrc $HOME/.vimrc
 fi
-
+ln -s $SETUP/vim/plugins.vim $HOME/.vim/plugins.vim
 
 ###### Mac installs ##########
 if [ "$OS" == "Mac OS X" ]; then
