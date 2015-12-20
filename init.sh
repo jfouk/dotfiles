@@ -24,12 +24,33 @@ then
     exit 1
 fi
 
-#link config files to home directory
-#ln -s ~/Development/Setup/dotfiles/.tmux.conf ~/.tmux.conf
-#ln -s ~/Development/Setup/dotfiles/.vimrc ~/.vimrc
+#link config files to home directory if files do not already exist
+if [ ! -f $HOME/.tmux.conf ]; then
+    echo "Linking tmux config"
+    ln -s ~/Development/Setup/dotfiles/.tmux.conf ~/.tmux.conf
+fi
+if [ ! -f $HOME/.vimrc ]; then
+    echo "Linking vimrc"
+    ln -s ~/Development/Setup/dotfiles/.vimrc ~/.vimrc
+fi
+
+
+###### Mac installs ##########
+if [ "$OS" == "Mac OS X" ]; then
+    #copy over extra tmux file
+    cp .tmux-osx.conf $HOME/.tmux-extra.conf
+    #install the_silver_searcher
+    brew install the_silver_searcher
+    #for tmux copy
+    brew install reattach-to-user-namespace
+elif [ "$OS" == "Linux" ]; then
+    #copy over extra tmux file
+    cp .tmux-linux.conf $HOME/.tmux-extra.conf
+    #install the_silver_searcher
+    sudo yum install the_silver_searcher
+fi
 
 #installs if linux
-#sudo yum install the_silver_searcher
 
 #vundle install
 

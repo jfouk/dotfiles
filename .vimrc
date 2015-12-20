@@ -301,7 +301,7 @@ let g:ctrlp_max_files = 10000
 "let g:ctrlp_match_window = 'bottom,order:ttb'  
 let g:ctrlp_switch_buffer = 0   "hopefully always open in same window
 let g:ctrlp_follow_symlinks = 1 "follow symlinks but ignore looped
-let g:ctrlp_working_path_mode = 'wra' "search from either current directory or the closest .git file to CWD? not sure
+let g:ctrlp_working_path_mode = 'ra' "search from either current directory or the closest .git file to CWD? not sure
 "let g:ctrlp_working_path_mode = 0 "search from either current directory or the closest .git file to CWD? not sure
 "let g:ctrlp_user_command = 'ag %s -l -U --hidden -g ""'
 nnoremap <leader>r :CtrlPClearCache <CR>
