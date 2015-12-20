@@ -1,7 +1,8 @@
 #!/bin/sh
-#init script
+#---------------- Initialization Script ----------------
 
-#path to where all these files are
+## Setup path variables and determine OS
+# path to where all these files are
 SETUP=$PWD
 #check os
 case "$(uname -s)" in
@@ -17,14 +18,17 @@ case "$(uname -s)" in
         ;;
 esac
 
+# Confirmation of OS
 echo "Running install script for $OS"
-read -p "Are you sure? " -n 1 -r
+read -p "Would you like to proceed with the installation?" -n 1 -r
 echo    # (optional) move to a new line
 if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
     exit 1
 fi
 
+
+#---------------- Link Config Files ----------------
 #link config files to home directory if files do not already exist
 if [ ! -f $HOME/.tmux.conf ]; then
     echo "Linking tmux config"
@@ -39,7 +43,7 @@ if [ ! -f $HOME/.vim/plugins.vim ]; then
     ln -s $SETUP/vim/plugins.vim $HOME/.vim/plugins.vim
 fi
 
-###### Mac installs ##########
+#---------------- Mac Specific Installs ----------------
 if [ "$OS" == "Mac OS X" ]; then
     #copy over extra tmux file
     cp $SETUP/tmux/.tmux-osx.conf $HOME/.tmux-extra.conf
@@ -47,6 +51,8 @@ if [ "$OS" == "Mac OS X" ]; then
     brew install the_silver_searcher
     #for tmux copy
     brew install reattach-to-user-namespace
+
+#---------------- Linux Specific Installs ----------------
 elif [ "$OS" == "Linux" ]; then
     #copy over extra tmux file
     cp $SETUP/tmux/.tmux-linux.conf $HOME/.tmux-extra.conf
