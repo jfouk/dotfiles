@@ -34,19 +34,22 @@ if [ ! -f $HOME/.vimrc ]; then
     echo "Linking vimrc"
     ln -s $SETUP/vim/.vimrc $HOME/.vimrc
 fi
-ln -s $SETUP/vim/plugins.vim $HOME/.vim/plugins.vim
+if [ ! -f $HOME/.vim/plugins.vim ]; then
+    echo "Linking vim plugins"
+    ln -s $SETUP/vim/plugins.vim $HOME/.vim/plugins.vim
+fi
 
 ###### Mac installs ##########
 if [ "$OS" == "Mac OS X" ]; then
     #copy over extra tmux file
-    cp .tmux-osx.conf $HOME/.tmux-extra.conf
+    cp $SETUP/tmux/.tmux-osx.conf $HOME/.tmux-extra.conf
     #install the_silver_searcher
     brew install the_silver_searcher
     #for tmux copy
     brew install reattach-to-user-namespace
 elif [ "$OS" == "Linux" ]; then
     #copy over extra tmux file
-    cp .tmux-linux.conf $HOME/.tmux-extra.conf
+    cp $SETUP/tmux/.tmux-linux.conf $HOME/.tmux-extra.conf
     #install the_silver_searcher
     sudo yum install the_silver_searcher
 fi
