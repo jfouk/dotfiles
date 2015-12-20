@@ -43,6 +43,34 @@ if [ ! -f $HOME/.vim/plugins.vim ]; then
     ln -s $SETUP/vim/plugins.vim $HOME/.vim/plugins.vim
 fi
 
+#tmux powerline themes
+# make directories if not there
+if [ ! -d $HOME/.tmux/powerline ]; then
+    echo "Make tmux-powerline directory"
+    mkdir $HOME/.tmux/powerline
+fi
+if [ ! -d $HOME/.tmux/powerline/themes ]; then
+    echo "Make tmux-powerline/themes directory"
+    mkdir $HOME/.tmux/powerline/themes
+fi
+if [ ! -d $HOME/.tmux/powerline/segments ]; then
+    echo "Make tmux-powerline/segments directory"
+    mkdir $HOME/.tmux/powerline/segments
+fi
+#link theme files
+if [ ! -f $HOME/.tmux/powerline/themes/jfouktheme.sh ]; then
+    echo "Linking powerline themes"
+    ln -s $SETUP/tmux/jfouktheme.sh $HOME/.tmux/powerline/themes/jfouktheme.sh
+fi
+if [ ! -f $HOME/.tmux/powerline/segments/now_playing.sh ]; then
+    echo "Linking powerline now_playing segment"
+    ln -s $SETUP/tmux/now_playing.sh $HOME/.tmux/powerline/segments/now_playing.sh
+fi
+if [ ! -f $HOME/.tmux-powerlinerc ]; then
+    echo "Linking powerline config"
+    ln -s $SETUP/tmux/.tmux-powerlinerc $HOME/.tmux-powerlinerc
+fi
+
 #---------------- Mac Specific Installs ----------------
 if [ "$OS" == "Mac OS X" ]; then
     #copy over extra tmux file
@@ -63,7 +91,7 @@ fi
 
 #---------------- General Installs ----------------
 
-if [ ! -f $HOME/.tmux/plugins/tpm ]; then
+if [ ! -d $HOME/.tmux/plugins/tpm ]; then
     echo "Installing Tmux Plugin Manager"
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
