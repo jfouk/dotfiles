@@ -17,6 +17,7 @@ Plugin 'scrooloose/nerdcommenter'   "easy comments
 Plugin 'scrooloose/syntastic'   "TODO setup
 Plugin 'taglist.vim'                "function lists
 Plugin 'mbbill/undotree'            "undo tree
+Plugin 'ludovicchabant/vim-gutentags'
 
 "--------------- Directory navigation --------------
 Plugin 'ctrlpvim/ctrlp.vim'         "fuzzy file searcher
