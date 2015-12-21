@@ -72,18 +72,7 @@ au FuncUndefined FF* source ~/.vim/findfile.vim
 "" Unset 'list' in :Gstatus window (which usually contains tab characters).
 "autocmd BufReadPost .git/index set nolist
 
-"source ~/.vim/plugin/bufexplorer.vim
-"let g:bufExplorerSplitBelow = 1
-"let g:bufExplorerOpenMode = 1
-"let g:bufExplorerSplitHorzSize = 7
-
-"let g:BufList_Hide=0
-"source ~/.vim/plugin/buflist.vim
-"call BufList_Open()
-"let g:miniBufExplVSplit = 25    " column width in chars, go vertical
-"let g:miniBufExplVSplit = 0    " column width in chars, go vertical
-"let g:miniBufExplSplitBelow = 0 " right side column
-"let g:miniBufExplUseSingleClick = 1 " single click to open buffers
+"""""""""" Syntastic Settings """"""""
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -253,6 +242,7 @@ let NERDTreeHijackNetrw=1
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='badwolf'
+"let g:airline_theme='solarized'
 let g:airline#extensions#tabline#buffer_nr_show = 1
 "let g:airline#extensions#tabline#fnamemod = '.'
 let g:airline#extensions#tabline#fnamemod = ':t'

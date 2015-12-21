@@ -11,32 +11,39 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
-Plugin 'Yggdroot/indentLine'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/syntastic'
-"Plugin 'fholgado/minibufexpl.vim'
-Plugin 'file:///~/vimplugins/'
-Plugin 'jewes/Conque-Shell'
+"--------------- Editor Enhancements --------------
+Plugin 'Yggdroot/indentLine'        "indentation lines
+Plugin 'scrooloose/nerdcommenter'   "easy comments
+Plugin 'scrooloose/syntastic'   "TODO setup
+Plugin 'taglist.vim'                "function lists
+Plugin 'mbbill/undotree'            "undo tree
 
-Plugin 'WolfgangMehner/vim-plugins'
-Plugin 'mbbill/code_complete'
+"--------------- Directory navigation --------------
+Plugin 'ctrlpvim/ctrlp.vim'         "fuzzy file searcher
+Plugin 'scrooloose/nerdtree'        "dir tree
+Plugin 'dhruvasagar/vim-vinegar'    "nerdtree enabler
+Plugin 'tpope/vim-fugitive'         "git utility
+
+"--------------- Colorschemes and Customization --------------
 Plugin 'morhetz/gruvbox'
-Plugin 'taglist.vim'
 Plugin 'bling/vim-airline'
 Plugin 'chriskempson/vim-tomorrow-theme'
-Plugin 'nanotech/jellybeans.vim'
-Plugin 'antlypls/vim-colors-codeschool' 
-"Plugin 'jistr/vim-nerdtree-tabs'
-"Plugin 'sjl/gundo.vim'
 Plugin 'joshdick/onedark.vim'
 Plugin 'mkarmona/colorsbox'
 Plugin 'kristijanhusak/vim-hybrid-material'
-Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'mbbill/undotree'
-Plugin 'dhruvasagar/vim-vinegar'
-Plugin 'tpope/vim-fugitive'
+Plugin 'nanotech/jellybeans.vim'
+Plugin 'antlypls/vim-colors-codeschool' 
+
+"--------------- Not in use  --------------
+"Plugin 'fholgado/minibufexpl.vim'
+"Plugin 'file:///~/vimplugins/'
+"Plugin 'jewes/Conque-Shell'
+"Plugin 'jistr/vim-nerdtree-tabs'
+"Plugin 'sjl/gundo.vim'
+"Plugin 'WolfgangMehner/vim-plugins'
+"Plugin 'mbbill/code_complete'
+
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
