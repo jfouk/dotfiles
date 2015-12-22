@@ -486,10 +486,9 @@ function! s:btags_source()
   if !filereadable(expand('%'))
     throw 'Save the file first'
   endif
-
+"ctags -f - src/hadepf.pgm/Driver/Pf/PfVendorAdapterMgr.C | perl -ne 'unless (/^\!/) { s/^(.*?)\t(.*?)\t/\x1b[33m\1\x1b[m\t\x1b[34m\2\x1b[m\t/; print }'
   for cmd in [
-    \ printf('ctags -f - --sort=no --fields=nKs --excmd=number --language-force=%s %s', &filetype, expand('%:S')),
-    \ printf('ctags -f - --sort=no --fields=nKs --excmd=number %s', expand('%:S'))]
+    \ printf('ctags -f - --sort=no --fields=nKs --excmd=number %s | perl -ne "unless (/^\!/) { s/^(.*?)\t(.*?)\t/\x1b[33m\1\x1b[m\t\x1b[34m\2\x1b[m\t/; print }"', expand('%:S'))]
     let lines = split(system(cmd), "\n")
     if !v:shell_error
       break
