@@ -94,6 +94,11 @@ fi
 if [ ! -d $HOME/.tmux/plugins/tpm ]; then
     echo "Installing Tmux Plugin Manager"
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    echo "Installing fzf"
+    #for fzf
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+    ~/.fzf/install
+
 fi
 #installs if linux
 

@@ -18,6 +18,7 @@ Plugin 'scrooloose/syntastic'   "TODO setup
 Plugin 'taglist.vim'                "function lists
 Plugin 'mbbill/undotree'            "undo tree
 Plugin 'ludovicchabant/vim-gutentags'
+"Plugin 'JazzCore/ctrlp-cmatcher'
 
 "--------------- Directory navigation --------------
 Plugin 'ctrlpvim/ctrlp.vim'         "fuzzy file searcher

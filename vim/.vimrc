@@ -272,10 +272,18 @@ if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
 
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -f -l -U --hidden --nocolor -g ""'
+  "let g:ctrlp_user_command = 'ag %s -f -l -U --hidden --nocolor -g ""'
+  let g:ctrlp_user_command = 'ag %s -i -f --hidden --nocolor --nogroup --hidden
+        \ --ignore .git
+        \ --ignore .svn
+        \ --ignore .hg
+        \ --ignore .DS_Store
+        \ --ignore "**/*.pyc"
+        \ -g ""'
 endif
 let g:ctrlp_root_markers = ['src/']
-
+let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+"let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
 "ctrlp function
 "delc Cb
 "command Cb :CtrlPBookmarkDirAdd <CR> | "1" <CR>
@@ -331,15 +339,16 @@ set undolevels=1000 "maximum number of changes that can be undone
 set undoreload=10000 "maximum number lines to save for undo on a buffer reload
 
 function! s:find_root()
-    for vcs in ['src']
-        let dir = finddir(vcs.'/..', ';')
+    for vcs in ['.git', 'src']
+        " look a couple directories up
+        let dir = finddir(vcs.'/..', fnamemodify(expand('%:p'),':p:h').';'.fnamemodify(expand('%:p'),':p:h:h:h:h:h'))
             if !empty(dir)
-                execute 'FZF' dir
-                "echo dir
+                "execute 'FZF' dir
+                echo dir
             return
         endif
     endfor
-    FZF
+    "FZF
 endfunction
 
 command! FZFR call s:find_root()
