@@ -1,4 +1,6 @@
 "--------------- General ------------------"
+
+"source plugins
 source $HOME/.vim/plugins.vim
 
 syntax on
@@ -9,7 +11,7 @@ filetype on
 filetype plugin on
 filetype indent on
 
-set nocp
+set nocp    "set no compatible mode
 set number
 set et
 set sw=4
@@ -190,8 +192,6 @@ function! CsLoad(release, build)
     execute "cs add ". c_path
 endfunction
 command! -nargs=* Csload call CsLoad(<f-args>)
-
-command Cafw850 cs add /afs/rchland.ibm.com/usr5/phypbld/afw/afw850/builds/LATEST/cscope/afwp 
 
 nmap <leader>j :bnext<CR>
 nmap <leader>k :bp<CR>
