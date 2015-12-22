@@ -45,6 +45,11 @@ set showmode
 set nocompatible
 set so=0
 
+set csto=1  "search ctags before cscope tags
+
+"trying
+"set cscopetag
+
 "colors gruvbox
 "colors zenburn
 "autocmd BufEnter * lcd %:p:h
@@ -85,6 +90,10 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
+"""""""" Fugitive Settings and Aliases """""""""
+set diffopt+=vertical
+nnoremap do2 :diffget //2<CR> :diffupdate<CR>
+nnoremap do3 :diffget //3<CR> :diffupdate<CR>
 "let g:solarized_contrast='high'
 "let g:solarized_termcolors=16
 "set term=screen-256color
@@ -200,7 +209,7 @@ nmap <leader>k :bp<CR>
 nnoremap <leader>f :CtrlP<CR>
 nnoremap <leader>b :CtrlPBuffer<CR>
 nnoremap <leader>m :CtrlPMRUFiles<CR>
-nnoremap <leader>t :CtrlPTag<CR>
+nnoremap <leader>t :CtrlPBufTag<CR>
 
 set path+=$PWD/**
 
@@ -263,7 +272,7 @@ if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
 
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l -U --hidden --nocolor -g ""'
+  let g:ctrlp_user_command = 'ag %s -f -l -U --hidden --nocolor -g ""'
 endif
 let g:ctrlp_root_markers = ['src/']
 
@@ -321,7 +330,19 @@ set undofile
 set undolevels=1000 "maximum number of changes that can be undone
 set undoreload=10000 "maximum number lines to save for undo on a buffer reload
 
+function! s:find_root()
+    for vcs in ['src']
+        let dir = finddir(vcs.'/..', ';')
+            if !empty(dir)
+                execute 'FZF' dir
+                "echo dir
+            return
+        endif
+    endfor
+    FZF
+endfunction
 
+command! FZFR call s:find_root()
 "function! Todo()
 "    let tomorrow = /    TT\>/ y  
 "    echo tomorrow
