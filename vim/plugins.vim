@@ -18,6 +18,10 @@ Plugin 'scrooloose/syntastic'   "TODO setup
 Plugin 'taglist.vim'                "function lists
 Plugin 'mbbill/undotree'            "undo tree
 Plugin 'ludovicchabant/vim-gutentags'
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-easytags'
 "Plugin 'JazzCore/ctrlp-cmatcher'
 
 "--------------- Directory navigation --------------

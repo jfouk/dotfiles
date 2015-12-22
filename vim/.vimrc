@@ -202,6 +202,10 @@ function! CsLoad(release, build)
 endfunction
 command! -nargs=* Csload call CsLoad(<f-args>)
 
+command! Locate call fzf#run(
+      \ {'source': 'cscope find g .*', 'sink': 'e', 'options': '-m'})
+
+      "\ {'source': 'cscope/afs/rchland.ibm.com/usr5/phypbld/afw/afw860/builds/LATEST/cscope/afwp/cscope.out -L1 .*', 'sink': 'e', 'options': '-m'})
 nmap <leader>j :bnext<CR>
 nmap <leader>k :bp<CR>
 
@@ -210,7 +214,10 @@ nnoremap <leader>f :CtrlP<CR>
 nnoremap <leader>b :CtrlPBuffer<CR>
 nnoremap <leader>m :CtrlPMRUFiles<CR>
 nnoremap <leader>t :CtrlPBufTag<CR>
-
+"fzf
+nnoremap <leader>F :FZFR<CR>
+nnoremap <leader>B :Buffers!<CR>
+nnoremap <leader>T :BufTags<CR>
 set path+=$PWD/**
 
 "taglist config
@@ -312,6 +319,9 @@ let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
 "exit out of insert mode speed
 set timeoutlen=1000 ttimeoutlen=0
 
+"easytags
+let g:easytags_include_members = 1
+
 "Toggle delete to buffer
 function! ToggleSideEffects()
     if mapcheck("dd", "n") == ""
@@ -343,12 +353,12 @@ function! s:find_root()
         " look a couple directories up
         let dir = finddir(vcs.'/..', fnamemodify(expand('%:p'),':p:h').';'.fnamemodify(expand('%:p'),':p:h:h:h:h:h'))
             if !empty(dir)
-                "execute 'FZF' dir
-                echo dir
+                execute 'FZF!' dir
+                "echo dir
             return
         endif
     endfor
-    "FZF
+    execute 'FZF!' expand('%:p')
 endfunction
 
 command! FZFR call s:find_root()
@@ -420,3 +430,118 @@ command! FZFR call s:find_root()
 ""        endif
 ""    endfor
 "endfunction
+"
+
+"
+" ----------------------------------------------------------------------------
+" BTags
+" ----------------------------------------------------------------------------
+function! s:align_lists(lists)
+  let maxes = {}
+  for list in a:lists
+    let i = 0
+    while i < len(list)
+      let maxes[i] = max([get(maxes, i, 0), len(list[i])])
+      let i += 1
+    endwhile
+  endfor
+  for list in a:lists
+    call map(list, "printf('%-'.maxes[v:key].'s', v:val)")
+  endfor
+  return a:lists
+endfunction
+
+"function! s:btags_source()
+  ""let lines = map(split(system(printf(
+    ""\ 'ctags -f - --sort=no --fields=nKs --excmd=pattern --language-force=%s %s',
+    ""\ &filetype, expand('%:S'))), "\n"), 'split(v:val, "\t")')
+  ""if v:shell_error
+    ""throw 'failed to extract tags'
+  ""endif
+  "for cmd in [
+    "\ printf('ctags -f - --sort=no --fields=nKs --excmd=pattern --language-force=%s %s', &filetype, expand('%:S'))]
+    ""\ printf('ctags -f - --sort=no --fields=nKs --excmd=pattern %s', expand('%:S'))]
+    "let lines = split(system(cmd), "\n")
+    "if !v:shell_error
+      "break
+    "endif
+  "endfor
+
+  ""return map(s:align_lists(lines), 'join(v:val, "\t")')
+  "return map(s:align_lists(map(lines, 'split(v:val, "\t")')), 'join(v:val, "\t")')
+"endfunction
+
+function! s:btags_sink(line)
+  let lines = split(a:line, "\t")
+  for line in lines
+      let arr = split(line, ":")
+      if arr[0] == "line"
+          exec arr[-1]
+      endif
+  endfor
+  sil! norm! zvzz
+endfunction
+
+function! s:btags_source()
+  if !filereadable(expand('%'))
+    throw 'Save the file first'
+  endif
+
+  for cmd in [
+    \ printf('ctags -f - --sort=no --fields=nKs --excmd=number --language-force=%s %s', &filetype, expand('%:S')),
+    \ printf('ctags -f - --sort=no --fields=nKs --excmd=number %s', expand('%:S'))]
+    let lines = split(system(cmd), "\n")
+    if !v:shell_error
+      break
+    endif
+  endfor
+  if v:shell_error
+    throw get(lines, 0, 'Failed to extract tags')
+  elseif empty(lines)
+    throw 'No tags found'
+  endif
+  "for line in lines[1:]
+    "execute split(line, "\t")[2]
+    "let line = line. {'filename': expand('%'), 'lnum': line('.'), 'text': getline('.')})
+    "echo line
+    "exe input("","")
+  "endfor
+  return map(s:align_lists(map(lines, 'split(v:val, "\t")')), 'join(v:val, "\t")')
+  "return lines
+endfunction
+
+"function! s:btags_sink(lines)
+  "if len(a:lines) < 2
+    "return
+  "endif
+  "let cmd = get(get(g:, 'fzf_action', s:default_action), a:lines[0], '')
+  "if !empty(cmd)
+    "execute 'silent' cmd '%'
+  "endif
+  "let qfl = []
+  "for line in a:lines[1:]
+    "execute split(line, "\t")[2]
+    "call add(qfl, {'filename': expand('%'), 'lnum': line('.'), 'text': getline('.')})
+  "endfor
+  "if len(qfl) > 1
+    "call setqflist(qfl)
+    "copen
+    "wincmd p
+    "cfirst
+  "endif
+  "normal! zz
+"endfunction
+
+function! s:btags()
+  try
+    call fzf#run({'source':  s:btags_source(),
+                 \'options': '--ansi -m -d "\t" --with-nth 4,1,5,6 --tiebreak=begin --prompt "Tags> "',
+                 \'sink':    function('s:btags_sink')})
+  catch
+    echohl WarningMsg
+    echom v:exception
+    echohl None
+  endtry
+endfunction
+
+command! BufTags call s:btags()
