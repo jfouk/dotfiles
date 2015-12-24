@@ -79,6 +79,9 @@ if [ "$OS" == "Mac OS X" ]; then
     brew install the_silver_searcher
     #for tmux copy
     brew install reattach-to-user-namespace
+    #exuberant ctags
+    brew install ctags
+    #dont forget to add PATH=/usr/local/bin:$PATH to zshrc
 
 #---------------- Linux Specific Installs ----------------
 elif [ "$OS" == "Linux" ]; then
