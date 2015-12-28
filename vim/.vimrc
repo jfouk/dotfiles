@@ -487,8 +487,16 @@ function! s:btags_source()
     throw 'Save the file first'
   endif
 "ctags -f - --sort=no --fields=nKs --excmd=number simple_alarm_clock.py | perl -ne 'unless (/^\!/) { s/^(.*?)\t(.*?)\t/\x1b[33m\1\x1b[m\t\x1b[34m\2\x1b[m\t/; print }'
+    "\ printf('ctags -f - --sort=no --fields=nKs --excmd=number %s | perl -ne "unless (/^\!/) { s/^(.*?)\t(.*?)\t/\x1b[33m\1\x1b[m\t\x1b[34m\2\x1b[m\t/; print }"', expand('%:S'))]
   for cmd in [
-    \ printf('ctags -f - --sort=no --fields=nKs --excmd=number %s | perl -ne "unless (/^\!/) { s/^(.*?)\t(.*?)\t/\x1b[33m\1\x1b[m\t\x1b[34m\2\x1b[m\t/; print }"', expand('%:S'))]
+    \ printf('ctags -f - --sort=no --fields=nKs --excmd=number %s | 
+    \ perl -ne "unless (/^\!/) { 
+    \ s/^(.*?)\t/\x1b[33m\1\x1b[m\t/; 
+    \ s/\t(function)\t/\t\x1b[32m\1\x1b[m\t/; 
+    \ s/\t(member)\t/\t\x1b[35m\1\x1b[m\t/; 
+    \ s/\t(macro)\t/\t\x1b[36m\1\x1b[m\t/; 
+    \ s/\t(class)\t/\t\x1b[34m\1\x1b[m\t/;
+    \ print }"', expand('%:S'))]
     let lines = split(system(cmd), "\n")
     if !v:shell_error
       break

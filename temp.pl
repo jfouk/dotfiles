@@ -1,9 +1,17 @@
-
+#For testing on the mac
 ctags -f - --sort=no --fields=nKs --excmd=number simple_alarm_clock.py | perl -ne 'unless (/^\!/) { s/^(.*?)\t(.*?)\t/\x1b[33m\1\x1b[m\t\x1b[34m\2\x1b[m\t/; print }'
 ctags -f - --sort=no --fields=nKs --excmd=number simple_alarm_clock.py | perl -ne 'unless (/^\!/) { s/^(.*?)\t(.*?)\t(.*?)\t/\x1b[33m\1\x1b[m\t\x1b[34m\2\x1b[m\t\x1b[35m\3\x1b[m\t/; s/(function)\t/\x1b[32m\1\x1b[m\t/; print }'
 
+#For testing on Linux
+ctags -f - --sort=no --fields=nKs --excmd=number src/hadepf.pgm/Driver/Pf/PfVendorAdapterMgr.C | perl -ne 'unless (/^\!/) { s/^(.*?)\t(.*?)\t(.*?)\t/\x1b[33m\1\x1b[m\t\x1b[34m\2\x1b[m\t\x1b[35m\3\x1b[m\t/; s/\t(function)\t/\t\x1b[32m\1\x1b[m\t/; print }'
 #search and replace string for function <-- this works proceed like this
-s/(function)\t/\x1b[32m\1\x1b[m\t/;
+s/(function|member|macro)\t/\x1b[32m\1\x1b[m\t/;
+switch($_) {
+    case m/\tfunction\t/ {s/\tfunction\t/\t\x1b[32m\1\x1b[m\t/;}
+}
+
+
+
  #printf('ctags -f - --sort=no --fields=nKs --excmd=number %s | 
  #perl -ne  
  ##-n causes Perl to run a while loop around the program, which makes it iterate over filename arguments
