@@ -3,15 +3,34 @@ ctags -f - --sort=no --fields=nKs --excmd=number simple_alarm_clock.py | perl -n
 ctags -f - --sort=no --fields=nKs --excmd=number simple_alarm_clock.py | perl -ne 'unless (/^\!/) { s/^(.*?)\t(.*?)\t(.*?)\t/\x1b[33m\1\x1b[m\t\x1b[34m\2\x1b[m\t\x1b[35m\3\x1b[m\t/; s/(function)\t/\x1b[32m\1\x1b[m\t/; print }'
 
 #For testing on Linux
-ctags -f - --sort=no --fields=nKs --excmd=number src/hadepf.pgm/Driver/Pf/PfVendorAdapterMgr.C | perl -ne 'unless (/^\!/) { s/^(.*?)\t(.*?)\t(.*?)\t/\x1b[33m\1\x1b[m\t\x1b[34m\2\x1b[m\t\x1b[35m\3\x1b[m\t/; s/\t(function)\t/\t\x1b[32m\1\x1b[m\t/; print }'
+ctags -f - --sort=no --fields=nKs --excmd=number src/hadepf.pgm/Driver/Pf/PfVendorAdapterMgr.C | perl -ne 'unless (/^\!/) { s/^(.*?)\t/\x1b[33m\1\x1b[m\t/; s/\t(function)\t/\t\x1b[32m\1\x1b[m\t/; s/\t(member)\t/\t\x1b[35m\1\x1b[m\t/; s/\t(macro)\t/\t\x1b[36m\1\x1b[m\t/; print }'
+
+ctags -f - --sort=no --fields=nKs --excmd=number src/hadepf.pgm/Driver/Pf/PfVendorAdapterMgr.C | perl -ne 'unless (/^\!/) { s/^(.*?)\t/\x1b[33m\1\x1b[m\t/; s/\t(function)\t/\t\x1b[32m\1\x1b[m\t/; s/\t(member)\t/\t\x1b[35m\1\x1b[m\t/; s/\t(macro)\t/\t\x1b[36m\1\x1b[m\t/; @classes = ( $_ =~ m/\tclass:(.*?)/); print for @classes}'
+
+ctags -f - --sort=no --fields=nKs --excmd=number src/hadepf.pgm/Driver/Pf/PfVendorAdapterMgr.C | perl -ne 'my @classes = ( $_ =~ m/\tclass:(.*)/);  my %hash = map { $_, 1 } @classes; my @unique = keys %hash;print "@unique\n"; '
+# this prints multiple times because the perl command is recursing through every line
+# with switch statement
+#ctags -f - --sort=no --fields=nKs --excmd=number src/hadepf.pgm/Driver/Pf/PfVendorAdapterMgr.C | perl -ne 'unless (/^\!/) {  if($_ =~ m/\tfunction\t/) {s/\tfunction\t/\t\x1b[32m\1\x1b[m\t/;} print }'
 #search and replace string for function <-- this works proceed like this
-s/(function|member|macro)\t/\x1b[32m\1\x1b[m\t/;
+s/\t(function)\t/\t\x1b[32m\1\x1b[m\t/;
+s/\t(member)\t/\t\x1b[35m\1\x1b[m\t/;
+s/\t(macro)\t/\t\x1b[36m\1\x1b[m\t/;
+s/\t(class)\t/\t\x1b[34m\1\x1b[m\t/;
 switch($_) {
     case m/\tfunction\t/ {s/\tfunction\t/\t\x1b[32m\1\x1b[m\t/;}
 }
 
+switch($_) {case m/\tfunction\t/ {s/\tfunction\t/\t\x1b[32m\1\x1b[m\t/;}}
 
+if($_ =~ m/\tfunction\t/) {
+    s/\tfunction\t/\t\x1b[32m\1\x1b[m\t/;
+}
 
+if($_ =~ m/\tfunction\t/) {s/\tfunction\t/\t\x1b[32m\1\x1b[m\t/;}
+
+#colorize classes
+@classes ( $_ =~ m/\tclass:(.*?)/);
+print $classes;
  #printf('ctags -f - --sort=no --fields=nKs --excmd=number %s | 
  #perl -ne  
  ##-n causes Perl to run a while loop around the program, which makes it iterate over filename arguments

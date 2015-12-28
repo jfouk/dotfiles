@@ -210,14 +210,15 @@ nmap <leader>j :bnext<CR>
 nmap <leader>k :bp<CR>
 
 "ctrl-p
-nnoremap <leader>f :CtrlP<CR>
-nnoremap <leader>b :CtrlPBuffer<CR>
-nnoremap <leader>m :CtrlPMRUFiles<CR>
-nnoremap <leader>t :CtrlPBufTag<CR>
+nnoremap <leader>F :CtrlP<CR>
+nnoremap <leader>B :CtrlPBuffer<CR>
+nnoremap <leader>M :CtrlPMRUFiles<CR>
+nnoremap <leader>T :CtrlPBufTag<CR>
 "fzf
-nnoremap <leader>F :FZFR<CR>
-nnoremap <leader>B :Buffers!<CR>
-nnoremap <leader>T :BufTags<CR>
+nnoremap <leader>f :FZFR<CR>
+nnoremap <leader>b :Buffers!<CR>
+nnoremap <leader>t :BufTags<CR>
+let $FZF_DEFAULT_COMMAND = 'ag -l --hidden -g ""'
 set path+=$PWD/**
 
 "taglist config
