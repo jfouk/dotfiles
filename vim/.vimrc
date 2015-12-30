@@ -371,7 +371,7 @@ function! s:find_root()
             return
         endif
     endfor
-    execute 'FZF!' expand('%:p')
+    execute 'FZF!' fnamemodify(expand('%:p'),':p:h')
 endfunction
 
 command! FZFR call s:find_root()
