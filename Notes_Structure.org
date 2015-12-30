@@ -1,0 +1,27 @@
+* Notes Structure
+** Directory Structure
+  - Root
+      - Journal :: Daily logs and todos are stored here
+            - contains a TODAY symlink to link to the current day
+      - Projects :: Specific project files from the daily log are copied here
+      - Education :: Store things I learn here
+** Process
+      - Each day, write in the current journal entry
+      - if there is something I write down in the current journal entry that
+        I want to move to a different structure, add a tag thats either
+        /:help:/ or /:project:/
+      - At the end of the day, go through all /:help:/ or /:project:/ tags and
+        copy them over to a new directory
+
+* TEMP
+
+** TaskList for Today [/]
+*** TODO Setup Orgmode [1/4]							     :home:
+      - [ ] write bashscripts to auto setup journal and symlink
+      - [ ] jump to header
+      - [ ] fzf tag
+      - [X] header indent
+*** TODO Daily Script								     :home:
+*** TODO fix easytags lag for vimrc						     :home:
+*** TODO TMUX new split go to same directory				     :home:
+*** TODO bash command to go to project root				     :home:
