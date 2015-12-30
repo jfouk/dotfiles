@@ -103,7 +103,8 @@ nnoremap do3 :diffget //3<CR> :diffupdate<CR>
 
 """""""" OrgMode """""""""""""
 let g:org_agenda_files = ['~/Development/Notes/*.org']
-let g:org_indent = 0
+let g:org_indent = 1
+imap <NL> <Plug>OrgNewHeadingBelowInsert
 "let g:solarized_contrast='high'
 "let g:solarized_termcolors=16
 "set term=screen-256color
@@ -361,7 +362,7 @@ set undolevels=1000 "maximum number of changes that can be undone
 set undoreload=10000 "maximum number lines to save for undo on a buffer reload
 
 function! s:find_root()
-    for vcs in ['.git', 'src']
+    for vcs in ['.mark','.git', 'src']
         " look a couple directories up
         let dir = finddir(vcs.'/..', fnamemodify(expand('%:p'),':p:h').';'.fnamemodify(expand('%:p'),':p:h:h:h:h:h'))
             if !empty(dir)

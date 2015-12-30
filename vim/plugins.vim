@@ -27,6 +27,7 @@ Plugin 'vim-scripts/utl.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'calendar.vim--Matsumoto'
+Plugin 'SyntaxRange'
 "Plugin 'tpope/vim-markdown'
 "Plugin 'JazzCore/ctrlp-cmatcher'
 
