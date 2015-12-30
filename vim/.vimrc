@@ -46,6 +46,12 @@ set nocompatible
 set so=0
 
 set csto=1  "search ctags before cscope tags
+"markdown
+autocmd BufNewFile,BufRead *.md set filetype=markdown
+
+"let &t_ZM = "\e[3m"
+set t_ZH=[3m
+set t_ZR=[23m
 
 "trying
 "set cscopetag
@@ -94,6 +100,10 @@ let g:syntastic_check_on_wq = 0
 set diffopt+=vertical
 nnoremap do2 :diffget //2<CR> :diffupdate<CR>
 nnoremap do3 :diffget //3<CR> :diffupdate<CR>
+
+"""""""" OrgMode """""""""""""
+let g:org_agenda_files = ['~/Development/Notes/*.org']
+let g:org_indent = 0
 "let g:solarized_contrast='high'
 "let g:solarized_termcolors=16
 "set term=screen-256color
@@ -101,7 +111,7 @@ nnoremap do3 :diffget //3<CR> :diffupdate<CR>
 set background=dark
 let g:hybrid_use_Xresources = 1
 let g:gruvbox_contrast_dark = 'hard'
-"let g:gruvbox_italic=1
+let g:gruvbox_italic=1
 "let g:colorsbox_contrast_dark = 'medium'
 colo gruvbox
 "set csprg=/afs/rchland.ibm.com/usr6/pbarrett/public/bin/run_cscope-vim
@@ -218,7 +228,8 @@ nnoremap <leader>T :CtrlPBufTag<CR>
 nnoremap <leader>f :FZFR<CR>
 nnoremap <leader>b :Buffers!<CR>
 nnoremap <leader>t :BufTags<CR>
-let $FZF_DEFAULT_COMMAND = 'ag -l --hidden -g ""'
+nnoremap <leader>o :FZF! /home/jfouk/Development/Notes<CR>
+let $FZF_DEFAULT_COMMAND = 'ag -l -f --hidden -g ""'
 set path+=$PWD/**
 
 "taglist config
@@ -243,7 +254,6 @@ map <A-o> <plug>NERDTreeTabsToggle<CR>
 "nnoremap <A-u> :GundoToggle<CR>
 
 
-nnoremap <leader>o :NERDTreeTabsToggle <CR>
 nnoremap <leader>O :NERDTreeFind <CR>
 "nnoremap <leader>u :GundoToggle<CR>
 nnoremap <leader>u :UndotreeToggle<CR>
@@ -322,6 +332,7 @@ set timeoutlen=1000 ttimeoutlen=0
 
 "easytags
 let g:easytags_include_members = 1
+let g:easytags_async = 1
 
 "Toggle delete to buffer
 function! ToggleSideEffects()
