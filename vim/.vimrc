@@ -49,7 +49,8 @@ set csto=1  "search ctags before cscope tags
 "markdown
 autocmd BufNewFile,BufRead *.md set filetype=markdown
 
-"let &t_ZM = "\e[3m"
+"let &t_ZH = "\e[3m"
+"let &t_ZR = "\e[23m"
 set t_ZH=[3m
 set t_ZR=[23m
 
@@ -112,7 +113,6 @@ imap <NL> <Plug>OrgNewHeadingBelowInsert
 set background=dark
 let g:hybrid_use_Xresources = 1
 let g:gruvbox_contrast_dark = 'hard'
-let g:gruvbox_italic=1
 "let g:colorsbox_contrast_dark = 'medium'
 colo gruvbox
 "set csprg=/afs/rchland.ibm.com/usr6/pbarrett/public/bin/run_cscope-vim
@@ -246,8 +246,10 @@ set directory=$HOME/.vimswp//
 set mouse=a
 if has("mac")
     set clipboard=unnamed
+    let g:gruvbox_italic=0
 else
     set clipboard=unnamedplus
+    let g:gruvbox_italic=1
 endif
 
 set guioptions-=T  "remove toolbar
@@ -507,7 +509,9 @@ function! s:btags_source()
     \ s/^(.*?)\t/\x1b[33m\1\x1b[m\t/; 
     \ s/\t(function)\t/\t\x1b[32m\1\x1b[m\t/; 
     \ s/\t(member)\t/\t\x1b[35m\1\x1b[m\t/; 
+    \ s/\t(variable)\t/\t\x1b[35m\1\x1b[m\t/; 
     \ s/\t(macro)\t/\t\x1b[36m\1\x1b[m\t/; 
+    \ s/\t(namespace)\t/\t\x1b[36m\1\x1b[m\t/; 
     \ s/\t(class)\t/\t\x1b[34m\1\x1b[m\t/;
     \ print }"', expand('%:S'))]
     let lines = split(system(cmd), "\n")
