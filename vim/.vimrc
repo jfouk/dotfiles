@@ -104,8 +104,18 @@ nnoremap do3 :diffget //3<CR> :diffupdate<CR>
 
 """""""" OrgMode """""""""""""
 let g:org_agenda_files = ['~/Development/Notes/*.org']
-let g:org_indent = 1
+let g:org_indent =1
 imap <NL> <Plug>OrgNewHeadingBelowInsert
+imap <C-e> <C-o>:execute "normal! ==<<gi"<CR>
+autocmd FileType org :call FixOrgIndentMappings()
+function! FixOrgIndentMappings()
+    " Indent and Unindent and Realign
+    iunmap <buffer> <c-d>
+    iunmap <buffer> <c-t>
+    imap <buffer> <c-d> <C-o>:execute "normal! <<==A"<CR>
+    imap <buffer> <c-t> <C-o>:execute "normal! >>==A"<CR>
+endfunction
+    
 "let g:solarized_contrast='high'
 "let g:solarized_termcolors=16
 "set term=screen-256color
@@ -229,7 +239,8 @@ nnoremap <leader>T :CtrlPBufTag<CR>
 nnoremap <leader>f :FZFR<CR>
 nnoremap <leader>b :Buffers!<CR>
 nnoremap <leader>t :BufTags<CR>
-nnoremap <leader>o :FZF! /home/jfouk/Development/Notes<CR>
+nnoremap <leader>o :FZF! $ORG_NOTES<CR>
+nnoremap <leader>h :OrgHeaders<CR>
 let $FZF_DEFAULT_COMMAND = 'ag -l -f --hidden -g ""'
 set path+=$PWD/**
 
@@ -569,3 +580,31 @@ function! s:btags()
 endfunction
 
 command! BufTags call s:btags()
+
+"Org Headings
+
+function! s:orgtags_source()
+    "let lines = split(system('cat '.expand('%:S').' | ag "^\*"'), "\n")
+    "let lines = getline(1,"$")
+    let lines = split(system('ag "^\*" '.expand('%:S')), "\n")
+    return map(lines, 'substitute(v:val,"\*\\( \\)\\@!","  ","g")')
+    "return lines
+endfunction
+
+function! s:orgtags_sink(lines)
+    let keys = split(a:lines, ':')
+    exec keys[0]
+endfunction
+
+function! s:orgtags()
+  try
+    call fzf#run({'source':  reverse(s:orgtags_source()),
+                 \'options': '--ansi -m -d "\t" --tiebreak=begin --prompt "Headers> "',
+                 \'sink':    function('s:orgtags_sink')})
+  catch
+    echohl WarningMsg
+    echom v:exception
+    echohl None
+  endtry
+endfunction
+command! OrgHeaders call s:orgtags()
