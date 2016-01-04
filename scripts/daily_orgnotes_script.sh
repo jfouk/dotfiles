@@ -13,12 +13,13 @@ fi
 touch $ORG_NOTES/Journal/$(date +%Y)/$(date +%A_%b_%d).org
 echo $(date +%A_%b_%d)".org created! "
 
+# update YESTERDAY symlink
+rm $ORG_NOTES/Journal/YESTERDAY.org
+mv $ORG_NOTES/Journal/TODAY.org $ORG_NOTES/Journal/YESTERDAY.org
+echo "YESTERDAY.org symlink created! "
+
 # update TODAY symlink
-rm $ORG_NOTES/Journal/TODAY.org
+#rm $ORG_NOTES/Journal/TODAY.org
 ln -s $ORG_NOTES/Journal/$(date +%Y)/$(date +%A_%b_%d).org $ORG_NOTES/Journal/TODAY.org
 echo "TODAY.org symlink created! "
 
-# update YESTERDAY symlink
-rm $ORG_NOTES/Journal/YESTERDAY.org
-ln -s $ORG_NOTES/Journal/$(date +%Y -d "yesterday")/$(date +%A_%b_%d -d "yesterday").org $ORG_NOTES/Journal/YESTERDAY.org
-echo "YESTERDAY.org symlink created! "
