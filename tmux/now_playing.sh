@@ -255,15 +255,26 @@ __np_rhythmbox() {
 
 __np_spotify() {
 	if shell_is_linux; then
-		metadata=$(dbus-send --reply-timeout=42 --print-reply --dest=org.mpris.MediaPlayer2.spotify / org.freedesktop.MediaPlayer2.GetMetadata 2>/dev/null)
+		#metadata=$(dbus-send --reply-timeout=42 --print-reply --dest=org.mpris.MediaPlayer2.spotify / org.freedesktop.MediaPlayer2.GetMetadata 2>/dev/null)
+        metadata=$(dbus-send --print-reply --session --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata' 2>/dev/null)
 		if [ "$?" -eq 0 ] && [ -n "$metadata" ]; then
 			# TODO how do one express this with dbus-send? It works with qdbus but the problem is that it's probably not as common as dbus-send.
-			state=$(qdbus org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get org.mpris.MediaPlayer2.Player PlaybackStatus)
-			if [[ $state == "Playing" ]]; then
+			#state=$(qdbus org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get org.mpris.MediaPlayer2.Player PlaybackStatus)
+            TOTALCOUNT=$(pacmd list-sink-inputs | grep -c index)
+            SINKCOUNT=$(pacmd list-sink-inputs | grep -c 'state: RUNNING')
+            if [ $TOTALCOUNT -gt 1 ]; then
+                # It seems there is several player register, maybe spotify + a youtube video or else
+                state=unknown
+            elif [ $SINKCOUNT = 1 ]; then
+                state=Playing
+            else
+                state=Paused
+            fi
+            if [[ $state == "Playing" ]]; then
 				artist=$(echo "$metadata" | grep -PA2 "string\s\"xesam:artist\"" | tail -1 | grep -Po "(?<=\").*(?=\")")
 				track=$(echo "$metadata" | grep -PA1 "string\s\"xesam:title\"" | tail -1 | grep -Po "(?<=\").*(?=\")")
 				np=$(echo "${artist} - ${track}")
-			fi
+            fi
 		fi
 	elif shell_is_osx; then
 		np=$(${TMUX_POWERLINE_DIR_SEGMENTS}/np_spotify_mac.script)
