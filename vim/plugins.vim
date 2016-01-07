@@ -28,6 +28,8 @@ Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'calendar.vim--Matsumoto'
 Plugin 'SyntaxRange'
+Plugin 'tpope/vim-obsession'
+Plugin 'dhruvasagar/vim-prosession' " project sessions for obsession
 "Plugin 'tpope/vim-markdown'
 "Plugin 'JazzCore/ctrlp-cmatcher'
 

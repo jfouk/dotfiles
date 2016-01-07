@@ -115,7 +115,9 @@ function! FixOrgIndentMappings()
     imap <buffer> <c-d> <C-o>:execute "normal! <<==A"<CR>
     imap <buffer> <c-t> <C-o>:execute "normal! >>==A"<CR>
 endfunction
-    
+
+""""""""" Vim Prosession Settings""""""""""
+"let g:prosession_tmux_title = 1
 "let g:solarized_contrast='high'
 "let g:solarized_termcolors=16
 "set term=screen-256color
@@ -289,6 +291,9 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 set laststatus=2
+let g:airline_section_c = '%t'
+"let g:airline_section_warning = '%{ObsessionStatus()}'
+"set statusline+=%{ObsessionStatus()}
 
 "ctrlp
 let g:ctrlp_max_files = 10000
