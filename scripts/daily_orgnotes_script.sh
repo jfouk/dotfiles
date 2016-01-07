@@ -10,9 +10,12 @@ if [ -z "$ORG_NOTES" ]; then
 fi
 
 # create new org file for the day
-touch $ORG_NOTES/Journal/$(date +%Y)/$(date +%A_%b_%d).org
-echo $(date +%A_%b_%d)".org created! "
+if [ ! -f $ORG_NOTES/Journal/$(date +%Y)/$(date +%B)/$(date +%b_%d_%A).org ]; then
+    touch $ORG_NOTES/Journal/$(date +%Y)/$(date +%B)/$(date +%b_%d_%A).org
+    echo $(date +%D%t%H:%M)"    "$(date +%b_%d_%A)".org created! " >> $ORG_NOTES/.log/daily_orgnotes_log.txt
+fi
 
+# check to see if TODAY symlinked file has been touched
 # update YESTERDAY symlink
 rm $ORG_NOTES/Journal/YESTERDAY.org
 mv $ORG_NOTES/Journal/TODAY.org $ORG_NOTES/Journal/YESTERDAY.org
@@ -20,6 +23,6 @@ echo "YESTERDAY.org symlink created! "
 
 # update TODAY symlink
 #rm $ORG_NOTES/Journal/TODAY.org
-ln -s $ORG_NOTES/Journal/$(date +%Y)/$(date +%A_%b_%d).org $ORG_NOTES/Journal/TODAY.org
+ln -s $ORG_NOTES/Journal/$(date +%Y)/$(date +%B)/$(date +%b_%d_%A).org $ORG_NOTES/Journal/TODAY.org
 echo "TODAY.org symlink created! "
 
