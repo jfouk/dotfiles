@@ -16,6 +16,9 @@ if [ ! -f $ORG_NOTES/Journal/$(date +%Y)/$(date +%B)/$(date +%b_%d_%A).org ]; th
 fi
 
 # check to see if TODAY symlinked file has been touched
+# pull symlink
+link=( $(ls -lat $(readlink $ORG_NOTES/Journal/TODAY.org)) )
+
 # update YESTERDAY symlink
 rm $ORG_NOTES/Journal/YESTERDAY.org
 mv $ORG_NOTES/Journal/TODAY.org $ORG_NOTES/Journal/YESTERDAY.org
