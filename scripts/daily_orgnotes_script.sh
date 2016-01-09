@@ -11,6 +11,9 @@ fi
 
 # create new org file for the day
 if [ ! -f $ORG_NOTES/Journal/$(date +%Y)/$(date +%B)/$(date +%b_%d_%A).org ]; then
+    if [ ! -d $ORG_NOTES/Journal/$(date +%Y)/$(date +%B) ]; then
+        mkdir -p $ORG_NOTES/Journal/$(date +%Y)/$(date +%B)
+    fi
     touch $ORG_NOTES/Journal/$(date +%Y)/$(date +%B)/$(date +%b_%d_%A).org
     echo $(date +%D%t%H:%M)"    "$(date +%b_%d_%A)".org created! " >> $ORG_NOTES/.log/daily_orgnotes_log.txt
 fi

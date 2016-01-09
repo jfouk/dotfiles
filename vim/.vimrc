@@ -115,7 +115,9 @@ function! FixOrgIndentMappings()
     imap <buffer> <c-d> <C-o>:execute "normal! <<==A"<CR>
     imap <buffer> <c-t> <C-o>:execute "normal! >>==A"<CR>
 endfunction
-    
+
+""""""""" Vim Prosession Settings""""""""""
+"let g:prosession_tmux_title = 1
 "let g:solarized_contrast='high'
 "let g:solarized_termcolors=16
 "set term=screen-256color
@@ -241,6 +243,7 @@ nnoremap <leader>b :Buffers!<CR>
 nnoremap <leader>t :BufTags<CR>
 nnoremap <leader>o :FZF! $ORG_NOTES<CR>
 nnoremap <leader>h :OrgHeaders<CR>
+nnoremap <leader>l :BLines!<CR>
 let $FZF_DEFAULT_COMMAND = 'ag -l -f --hidden -g ""'
 set path+=$PWD/**
 
@@ -289,6 +292,9 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 set laststatus=2
+"let g:airline_section_c = '%t'
+"let g:airline_section_warning = '%{ObsessionStatus()}'
+"set statusline+=%{ObsessionStatus()}
 
 "ctrlp
 let g:ctrlp_max_files = 10000
@@ -388,6 +394,25 @@ function! s:find_root()
 endfunction
 
 command! FZFR call s:find_root()
+
+
+function! BBLoad(release, build)
+    let release = a:release
+    let build = a:build
+    let c_path = "/afs/rchland.ibm.com/usr5/phypbld/afw/".release."/builds/".build."/src"
+    echo "Set backing build to ".c_path
+    execute "nnoremap <leader>p :FZF! ". c_path."<CR>"
+endfunction
+command! -nargs=* BBload call BBLoad(<f-args>)
+
+function! Pinit(release, build)
+    let release = a:release
+    let build = a:build
+    call BBLoad(release, build)
+    call CsLoad(release, build)
+endfunction
+command! -nargs=* Pinit call Pinit(<f-args>)
+    
 "function! Todo()
 "    let tomorrow = /    TT\>/ y  
 "    echo tomorrow
