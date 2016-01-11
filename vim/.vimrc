@@ -44,6 +44,9 @@ set more
 set showmode
 set nocompatible
 set so=0
+set listchars=tab:\ \ ,eol:¬,trail:⋅,extends:❯,precedes:❮
+set showbreak=↪
+set list
 
 set csto=1  "search ctags before cscope tags
 "markdown
@@ -116,12 +119,21 @@ function! FixOrgIndentMappings()
     imap <buffer> <c-t> <C-o>:execute "normal! >>==A"<CR>
 endfunction
 
+let g:utl_cfg_hdl_scm_http_system = "silent !open -a Firefox '%u#%f'"
+
 """"""""" Vim Prosession Settings""""""""""
 "let g:prosession_tmux_title = 1
 "let g:solarized_contrast='high'
 "let g:solarized_termcolors=16
 "set term=screen-256color
 "set t_Co=16
+"
+
+""""""""" Vimwiki """""""""""""
+
+"let g:vimwiki_list = [{'path': '~/my_site/',
+                       "\ 'syntax': 'markdown', 'ext': '.md'}]
+"let g:vimwiki_folding = 'list'
 set background=dark
 let g:hybrid_use_Xresources = 1
 let g:gruvbox_contrast_dark = 'hard'

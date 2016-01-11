@@ -15,17 +15,28 @@ if [ ! -f $ORG_NOTES/Journal/$(date +%Y)/$(date +%B)/$(date +%b_%d_%A).org ]; th
         mkdir -p $ORG_NOTES/Journal/$(date +%Y)/$(date +%B)
     fi
     touch $ORG_NOTES/Journal/$(date +%Y)/$(date +%B)/$(date +%b_%d_%A).org
-    echo $(date +%D%t%H:%M)"    "$(date +%b_%d_%A)".org created! " >> $ORG_NOTES/.log/daily_orgnotes_log.txt
+    echo $(date +%b\ %e\ %H:%M)"    "$(date +%b_%d_%A)".org created! " >> $ORG_NOTES/.log/daily_orgnotes_log.txt
 fi
 
-# check to see if TODAY symlinked file has been touched
-# pull symlink
-link=( $(ls -lat $(readlink $ORG_NOTES/Journal/TODAY.org)) )
+## check to see if TODAY symlinked file has been touched
 
-# update YESTERDAY symlink
-rm $ORG_NOTES/Journal/YESTERDAY.org
-mv $ORG_NOTES/Journal/TODAY.org $ORG_NOTES/Journal/YESTERDAY.org
-echo "YESTERDAY.org symlink created! "
+#first pull from symlink
+file=$(readlink $ORG_NOTES/Journal/TODAY.org)
+#link=( $(ls -lat $(readlink $ORG_NOTES/Journal/TODAY.org)) )
+link=( $(ls -lat $file) )
+#next from the log file (assuming the correct entry is the latest one)
+log=( $(tail -1 $ORG_NOTES/.log/daily_orgnotes_log.txt))
+#check if they match
+if [ "${link[5]} ${link[6]} ${link[7]}" == "${log[0]} ${log[1]}" ]; then
+    echo "$file not in use, moving to the trash folder!!!" >> $ORG_NOTES/.log/daily_orgnotes_log.txt
+    name=${file//\//%}
+    mv $file $ORG_NOTES/.trash/$name
+else
+    #if last file is in use, then update symlink
+    rm $ORG_NOTES/Journal/YESTERDAY.org
+    mv $ORG_NOTES/Journal/TODAY.org $ORG_NOTES/Journal/YESTERDAY.org
+    echo "YESTERDAY.org symlink created! "
+fi
 
 # update TODAY symlink
 #rm $ORG_NOTES/Journal/TODAY.org
