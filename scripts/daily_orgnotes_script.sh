@@ -9,15 +9,6 @@ if [ -z "$ORG_NOTES" ]; then
     exit 1
 fi
 
-# create new org file for the day
-if [ ! -f $ORG_NOTES/Journal/$(date +%Y)/$(date +%B)/$(date +%b_%d_%A).org ]; then
-    if [ ! -d $ORG_NOTES/Journal/$(date +%Y)/$(date +%B) ]; then
-        mkdir -p $ORG_NOTES/Journal/$(date +%Y)/$(date +%B)
-    fi
-    touch $ORG_NOTES/Journal/$(date +%Y)/$(date +%B)/$(date +%b_%d_%A).org
-    echo $(date +%b\ %e\ %H:%M)"    "$(date +%b_%d_%A)".org created! " >> $ORG_NOTES/.log/daily_orgnotes_log.txt
-fi
-
 ## check to see if TODAY symlinked file has been touched
 
 #first pull from symlink
@@ -26,8 +17,10 @@ file=$(readlink $ORG_NOTES/Journal/TODAY.org)
 link=( $(ls -lat $file) )
 #next from the log file (assuming the correct entry is the latest one)
 log=( $(tail -1 $ORG_NOTES/.log/daily_orgnotes_log.txt))
+echo "${link[5]} ${link[6]} ${link[7]}"
+echo "${log[0]} ${log[1]} ${log[2]}"
 #check if they match
-if [ "${link[5]} ${link[6]} ${link[7]}" == "${log[0]} ${log[1]}" ]; then
+if [ "${link[5]} ${link[6]} ${link[7]}" == "${log[0]} ${log[1]} ${log[2]}" ]; then
     echo "$file not in use, moving to the trash folder!!!" >> $ORG_NOTES/.log/daily_orgnotes_log.txt
     name=${file//\//%}
     mv $file $ORG_NOTES/.trash/$name
@@ -38,8 +31,18 @@ else
     echo "YESTERDAY.org symlink created! "
 fi
 
+# create new org file for the day
+if [ ! -f $ORG_NOTES/Journal/$(date +%Y)/$(date +%B)/$(date +%b_%d_%A).org ]; then
+    if [ ! -d $ORG_NOTES/Journal/$(date +%Y)/$(date +%B) ]; then
+        mkdir -p $ORG_NOTES/Journal/$(date +%Y)/$(date +%B)
+    fi
+    touch $ORG_NOTES/Journal/$(date +%Y)/$(date +%B)/$(date +%b_%d_%A).org
+    echo $(date +%b\ %e\ %H:%M)"    "$(date +%b_%d_%A)".org created! " >> $ORG_NOTES/.log/daily_orgnotes_log.txt
+fi
+
+
 # update TODAY symlink
-#rm $ORG_NOTES/Journal/TODAY.org
+rm $ORG_NOTES/Journal/TODAY.org
 ln -s $ORG_NOTES/Journal/$(date +%Y)/$(date +%B)/$(date +%b_%d_%A).org $ORG_NOTES/Journal/TODAY.org
 echo "TODAY.org symlink created! "
 
