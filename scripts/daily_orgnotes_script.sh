@@ -42,7 +42,7 @@ fi
 
 
 # update TODAY symlink
-rm $ORG_NOTES/Journal/TODAY.org
+#rm $ORG_NOTES/Journal/TODAY.org
 ln -s $ORG_NOTES/Journal/$(date +%Y)/$(date +%B)/$(date +%b_%d_%A).org $ORG_NOTES/Journal/TODAY.org
 echo "TODAY.org symlink created! "
 

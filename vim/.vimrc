@@ -48,7 +48,8 @@ set listchars=tab:\ \ ,eol:¬,trail:⋅,extends:❯,precedes:❮
 set showbreak=↪
 set list
 
-set csto=1  "search ctags before cscope tags
+"set csto=1  "search ctags before cscope tags
+set csto=0  "search ctags before cscope tags
 "markdown
 autocmd BufNewFile,BufRead *.md set filetype=markdown
 
@@ -645,3 +646,32 @@ function! s:orgtags()
   endtry
 endfunction
 command! OrgHeaders call s:orgtags()
+
+
+"Afw Files
+
+function! s:afw_source(version)
+    "let lines = split(system('cat '.expand('%:S').' | ag "^\*"'), "\n")
+    "let lines = getline(1,"$")
+    let s:afw_version=a:version
+    let lines = split(system('cat ~/.vim/.projectcache/'.a:version.'_LATEST'), "\n")
+    return map(lines, 'substitute(v:val,"\*\\( \\)\\@!","  ","g")')
+    "return lines
+endfunction
+
+function! s:afw_sink(file)
+    execute "edit /afs/rchland.ibm.com/usr5/phypbld/afw/".s:afw_version."/builds/LATEST/src/". a:file 
+endfunction
+
+function! s:afw_files(version)
+  try
+      call fzf#run({'source':  s:afw_source(a:version),
+                  \'options': '--ansi -m -d "\t" --tiebreak=end --prompt "Headers> "',
+                 \'sink':    function('s:afw_sink')})
+  catch
+    echohl WarningMsg
+    echom v:exception
+    echohl None
+  endtry
+endfunction
+command! -nargs=* AfwFiles call s:afw_files(<q-args>)
