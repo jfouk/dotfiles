@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # Copy Project Notes
 #
 #   This Script will copy project blocks from the daily org files to the project files, if
@@ -86,6 +87,7 @@ def projectFile(title, block, date):
 
         #open original file for reading
         with open(proj_file,"r") as orig:
+            print "Writing to " + title.strip() + "!"
             #open temp file for modifications and writing
             with open(temp_file,"w") as output:
 
@@ -117,7 +119,7 @@ def projectFile(title, block, date):
         # replace original file with temp file
         os.rename(temp_file,proj_file)
     except IOError as e:
-        print "Unable to open file!"
+        print "Unable to open" +  title.strip() + "!"
 
 
 

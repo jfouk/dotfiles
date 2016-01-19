@@ -110,6 +110,7 @@ nnoremap do3 :diffget //3<CR> :diffupdate<CR>
 let g:org_agenda_files = ['~/Development/Notes/*.org']
 let g:org_indent =1
 imap <NL> <Plug>OrgNewHeadingBelowInsert
+imap <M-CR> <Plug>OrgNewHeadingBelowInsert
 imap <C-e> <C-o>:execute "normal! ==<<gi"<CR>
 autocmd FileType org :call FixOrgIndentMappings()
 function! FixOrgIndentMappings()
