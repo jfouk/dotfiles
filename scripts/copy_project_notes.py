@@ -111,7 +111,7 @@ def projectFile(title, block, date):
                 if loc is not "Writing":
                     print "Starting new date entry!"
                     output.write('\n')
-                    output.write('*** ' + date.strip())
+                    output.write('*** ' + date.strip() + '\n')
                 # write the block
                 for line in block:
                     output.write(line)

@@ -422,7 +422,8 @@ command! -nargs=* BBload call BBLoad(<f-args>)
 function! Pinit(release, build)
     let release = a:release
     let build = a:build
-    call BBLoad(release, build)
+    "call BBLoad(release, build)
+    execute "nnoremap <leader>p :AfwFiles ". release."<CR>"
     call CsLoad(release, build)
 endfunction
 command! -nargs=* Pinit call Pinit(<f-args>)
@@ -667,7 +668,7 @@ endfunction
 function! s:afw_files(version)
   try
       call fzf#run({'source':  s:afw_source(a:version),
-                  \'options': '--ansi -m -d "\t" --tiebreak=end --prompt "Headers> "',
+                  \'options': '--ansi -m -d "\t" --tiebreak=end --prompt '.a:version.'"> "',
                  \'sink':    function('s:afw_sink')})
   catch
     echohl WarningMsg

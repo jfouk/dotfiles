@@ -226,6 +226,15 @@ complete -F _goSandBox gsb
 #}
 #complete -F _goSandBoxDirectory goSandboxDirectory
 
+function updateCache()
+{
+    if [ $1 ]; then
+        find /afs/rchland.ibm.com/usr5/phypbld/afw/$1/builds/LATEST/src -iname *.c -printf '%P\n' -or -iname *.h -printf '%P\n' > ~/.vim/.projectcache/${1}_LATEST
+    else
+        echo "Please enter in afw version"
+    fi
+}
+
 function vimProject()
 {
     local path temp old_ifs afwVersion
@@ -246,6 +255,7 @@ function vimProject()
                 if [[ ${temp[7]} =~ ${x##*/} ]]; then 
                     afwVersion=${x##*/}
                     echo "Starting vim with $afwVersion!"
+                    updateCache $afwVersion &
                     vimx -c "Pinit $afwVersion LATEST" $@
                     return
                 fi
@@ -256,6 +266,7 @@ function vimProject()
     vimx $@
 }
 alias vim="vimProject"
+
 
 alias vi="vimx"
 alias vims="vimx --servername "
