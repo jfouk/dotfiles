@@ -133,6 +133,7 @@ function goSandBox()
 {
     # check for parameters, if entered go to specified sandbox
     # otherwise, go to root of directory
+    sbDir="NULL"
     if [ $1 ] ; then
         #find all sb names
         local sbpaths sbarr
