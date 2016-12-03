@@ -100,6 +100,8 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_c_remove_include_errors = 1
+let g:syntastic_cpp_remove_include_errors = 1
 
 """""""" Fugitive Settings and Aliases """""""""
 set diffopt+=vertical
@@ -252,8 +254,9 @@ nnoremap <leader>B :CtrlPBuffer<CR>
 nnoremap <leader>M :CtrlPMRUFiles<CR>
 nnoremap <leader>T :CtrlPBufTag<CR>
 "fzf
-nnoremap <leader>f :FZFR<CR>
-nnoremap <leader>b :Buffers!<CR>
+"nnoremap <leader>f :FZFR<CR>
+nnoremap <leader>f :Files<CR>
+nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>t :BufTags<CR>
 nnoremap <leader>o :FZF! $ORG_NOTES<CR>
 nnoremap <leader>h :OrgHeaders<CR>
@@ -299,6 +302,7 @@ let NERDTreeHijackNetrw=1
 "airline
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_buffers = 0
 let g:airline_theme='badwolf'
 "let g:airline_theme='solarized'
 let g:airline#extensions#tabline#buffer_nr_show = 1
@@ -611,6 +615,7 @@ function! s:btags()
   try
     call fzf#run({'source':  s:btags_source(),
                  \'options': '--ansi -m -d "\t" --with-nth 4,1,5,6 --tiebreak=begin --prompt "Tags> "',
+                  \'down': 20,
                  \'sink':    function('s:btags_sink')})
   catch
     echohl WarningMsg
@@ -669,6 +674,7 @@ function! s:afw_files(version)
   try
       call fzf#run({'source':  s:afw_source(a:version),
                   \'options': '--ansi -m -d "\t" --tiebreak=end --prompt '.a:version.'"> "',
+                  \'down': 20,
                  \'sink':    function('s:afw_sink')})
   catch
     echohl WarningMsg
@@ -677,3 +683,5 @@ function! s:afw_files(version)
   endtry
 endfunction
 command! -nargs=* AfwFiles call s:afw_files(<q-args>)
+
+

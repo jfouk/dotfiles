@@ -140,7 +140,7 @@ function goSandBox()
         sbpaths=$(find /afs/rchland.ibm.com/usr1/joncfouk/ode/afw -maxdepth 2 -mindepth 2 -type d)
         sbarr=($sbpaths)
         for x in ${sbarr[*]}; do
-            if [[ $1 =~ ${x##*/} ]]; then 
+            if [ $1 == ${x##*/} ]; then 
                 sbDir=$x
                 break
             fi
@@ -262,9 +262,10 @@ function vimProject()
                 fi
             done
         fi
+    else
+        echo "not in project directory"
+        vimx $@
     fi
-    echo "not in project directory"
-    vimx $@
 }
 alias vim="vimProject"
 
@@ -283,6 +284,10 @@ alias ag="ag -S"
 alias myfat="mosh joncfouk@fatcat.rch.stglabs.ibm.com"
 alias mytim="ssh -X joncfouk@timothy.rch.stglabs.ibm.com"
 
+alias logon="$HOME/logon.sh; cat $HOME/signmeon_log.txt"
+
+alias dailyjournal="/home/jfouk/Development/Setup/dotfiles/scripts/daily_orgnotes_script.sh"
+alias dj="dailyjournal"
 
 PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
 export FZF_TMUX=0
