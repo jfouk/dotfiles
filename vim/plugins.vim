@@ -20,7 +20,7 @@ Plugin 'mbbill/undotree'            "undo tree
 Plugin 'ludovicchabant/vim-gutentags'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
-"Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-misc'
 "Plugin 'xolox/vim-easytags'
 Plugin 'jceb/vim-orgmode'
 Plugin 'vim-scripts/utl.vim'
@@ -28,13 +28,14 @@ Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'calendar.vim--Matsumoto'
 Plugin 'SyntaxRange'
-Plugin 'tpope/vim-obsession'
+"Plugin 'tpope/vim-obsession'
 Plugin 'dhruvasagar/vim-prosession' " project sessions for obsession
 "Plugin 'vimwiki/vimwiki'
 "Plugin 'tpope/vim-markdown'
 "Plugin 'JazzCore/ctrlp-cmatcher'
 "Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'justinmk/vim-syntax-extra'
+Plugin 'xolox/vim-notes'
 
 "--------------- Directory navigation --------------
 Plugin 'ctrlpvim/ctrlp.vim'         "fuzzy file searcher
