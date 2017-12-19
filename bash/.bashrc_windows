@@ -128,7 +128,7 @@ export FZF_TMUX=0
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 # run zsh!! needed for WSL
 # Switch to ZSH shell
-if test -t 1; then
-    exec zsh
-fi
+#if test -t 1; then
+#    exec zsh
+#fi
 
