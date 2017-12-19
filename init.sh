@@ -137,7 +137,9 @@ fi
 # Install fonts
 PARENT="$(dirname "$SETUP")"
 if [ ! -d $PARENT/fonts ]; then
-    echo "no font dir"
+    echo "Installing fonts"
+    git clone https://github.com/powerline/fonts $PARENT/fonts
+    $PARENT/fonts/install.sh
 fi
 #installs if linux
 
@@ -152,7 +154,9 @@ if [ ! -f $HOME/.Xresources ]; then
     echo "Linking .Xresources and .Xdefaults"
     ln -s $SETUP/urxvt/.Xresources $HOME/.Xresources
     ln -s $HOME/.Xresources $HOME/.Xdefaults
+    sudo apt-get install x11-xserver-utils
 fi
+
 #zshrc/bashrc 
 #source "$HOME/.vim/bundle/gruvbox/gruvbox_256palette.sh"
 
