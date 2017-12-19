@@ -146,6 +146,13 @@ if [ ! -d $HOME/.vim/bundle/Vundle.vim ]; then
     echo "Installing Vundle"
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
+
+#urxvt
+if [ ! -f $HOME/.Xresources ]; then
+    echo "Linking .Xresources and .Xdefaults"
+    ln -s $SETUP/urxvt/.Xresources $HOME/.Xresources
+    ln -s $HOME/.Xresources $HOME/.Xdefaults
+fi
 #zshrc/bashrc 
 #source "$HOME/.vim/bundle/gruvbox/gruvbox_256palette.sh"
 
