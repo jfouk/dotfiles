@@ -143,7 +143,7 @@ PARENT="$(dirname "$SETUP")"
 if [ ! -d $PARENT/fonts ]; then
     echo "Installing fonts"
     git clone https://github.com/powerline/fonts $PARENT/fonts
-    $PARENT/fonts/init.sh
+    $PARENT/fonts/install.sh
 fi
 #installs if linux
 
