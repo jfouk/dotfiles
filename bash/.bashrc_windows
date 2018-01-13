@@ -109,6 +109,9 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
+if [ -f ~/.bash_functions ]; then
+    . ~/.bash_functions
+fi
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -124,7 +127,6 @@ fi
 umask 022
 export FZF_DEFAULT_COMMAND='ag -g ""'
 export FZF_TMUX=0
-[[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 # run zsh!! needed for WSL
 # Switch to ZSH shell
