@@ -17,7 +17,7 @@ Plugin 'scrooloose/nerdcommenter'   "easy comments
 Plugin 'scrooloose/syntastic'   "TODO setup
 Plugin 'taglist.vim'                "function lists
 Plugin 'mbbill/undotree'            "undo tree
-Plugin 'ludovicchabant/vim-gutentags'
+"Plugin 'ludovicchabant/vim-gutentags'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 Plugin 'xolox/vim-misc'
@@ -25,10 +25,10 @@ Plugin 'xolox/vim-misc'
 Plugin 'jceb/vim-orgmode'
 Plugin 'vim-scripts/utl.vim'
 Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'calendar.vim--Matsumoto'
+"Plugin 'plasticboy/vim-markdown'
+"Plugin 'calendar.vim--Matsumoto'
 Plugin 'SyntaxRange'
-Plugin 'tpope/vim-obsession'
+"Plugin 'tpope/vim-obsession'
 Plugin 'dhruvasagar/vim-prosession' " project sessions for obsession
 "Plugin 'vimwiki/vimwiki'
 "Plugin 'tpope/vim-markdown'

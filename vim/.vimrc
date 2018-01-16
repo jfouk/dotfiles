@@ -724,3 +724,9 @@ let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 " change tablemode prefix
 let g:table_mode_map_prefix = '<Leader>m'
 "let g:ycm_add_preview_to_completeopt = 1
+if &term =~ '256color'
+    " disable Background Color Erase (BCE) so that color schemes
+    " render properly when inside 256-color tmux and GNU screen.
+    " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
+    set t_ut=
+endif
