@@ -20,7 +20,7 @@ Plugin 'mbbill/undotree'            "undo tree
 Plugin 'ludovicchabant/vim-gutentags'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
-"Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-misc'
 "Plugin 'xolox/vim-easytags'
 Plugin 'jceb/vim-orgmode'
 Plugin 'vim-scripts/utl.vim'
@@ -35,6 +35,10 @@ Plugin 'dhruvasagar/vim-prosession' " project sessions for obsession
 "Plugin 'JazzCore/ctrlp-cmatcher'
 "Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'justinmk/vim-syntax-extra'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'tpope/vim-abolish'          " search and replace matching case
+Plugin 'xolox/vim-notes'            " Note taking plugin
+Plugin 'dhruvasagar/vim-table-mode'
 
 "--------------- Directory navigation --------------
 Plugin 'ctrlpvim/ctrlp.vim'         "fuzzy file searcher
@@ -52,6 +56,7 @@ Plugin 'kristijanhusak/vim-hybrid-material'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'nanotech/jellybeans.vim'
 Plugin 'antlypls/vim-colors-codeschool' 
+"Plugin 'junegunn/rainbow_parentheses.vim'
 
 "--------------- Not in use  --------------
 "Plugin 'fholgado/minibufexpl.vim'

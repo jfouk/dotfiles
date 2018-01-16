@@ -3,6 +3,7 @@
 "source plugins
 source $HOME/.vim/plugins.vim
 
+
 syntax on
 syntax keyword cppType uint64 int64 uint32 int32 uint16 int16 uint8 int8
 syntax keyword cType uint64 int64 uint32 int32 uint16 int16 uint8 int8
@@ -91,17 +92,40 @@ au FuncUndefined FF* source ~/.vim/findfile.vim
 "autocmd BufReadPost .git/index set nolist
 
 """""""""" Syntastic Settings """"""""
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+"let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
+"nnoremap <C-w>E :SyntasticCheck<CR> :SyntasticToggleMode<CR>
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+"let g:syntastic_c_remove_include_errors = 1
+"let g:syntastic_cpp_remove_include_errors = 1
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
-let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
-nnoremap <C-w>E :SyntasticCheck<CR> :SyntasticToggleMode<CR>
+
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
+let g:syntastic_loc_list_height = 5
+let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_c_remove_include_errors = 1
-let g:syntastic_cpp_remove_include_errors = 1
+let g:syntastic_check_on_wq = 1
+"let g:syntastic_javascript_checkers = ['eslint']
+
+let g:syntastic_error_symbol = '❌'
+let g:syntastic_style_error_symbol = '⁉️'
+let g:syntastic_warning_symbol = '⚠️'
+let g:syntastic_style_warning_symbol = '💩'
+let g:syntastic_cpp_compiler = "/usr/bin/g++"
+let g:syntastic_cpp_compiler_options = "-std=c++11 -Wall -Wextra -Wpedantic"
+"let g:syntastic_cpp_checkers = ['gcc']
+
+highlight link SyntasticErrorSign SignColumn
+highlight link SyntasticWarningSign SignColumn
+highlight link SyntasticStyleErrorSign SignColumn
+highlight link SyntasticStyleWarningSign SignColumn
 
 """""""" Fugitive Settings and Aliases """""""""
 set diffopt+=vertical
@@ -112,15 +136,19 @@ nnoremap do3 :diffget //3<CR> :diffupdate<CR>
 let g:org_agenda_files = ['~/Development/Notes/*.org']
 let g:org_indent =1
 imap <NL> <Plug>OrgNewHeadingBelowInsert
-imap <M-CR> <Plug>OrgNewHeadingBelowInsert
+imap <M-CR> <Plug>OrgNewHeadingBelowAfterChildrenInsert
 imap <C-e> <C-o>:execute "normal! ==<<gi"<CR>
 autocmd FileType org :call FixOrgIndentMappings()
 function! FixOrgIndentMappings()
     " Indent and Unindent and Realign
-    iunmap <buffer> <c-d>
-    iunmap <buffer> <c-t>
-    imap <buffer> <c-d> <C-o>:execute "normal! <<==A"<CR>
-    imap <buffer> <c-t> <C-o>:execute "normal! >>==A"<CR>
+    "iunmap <buffer> <c-d>
+    "iunmap <buffer> <c-t>
+    "imap <buffer> <c-d> <C-o>:execute "normal! <<==A"<CR>
+    "imap <buffer> <c-t> <C-o>:execute "normal! >>==A"<CR>
+    imap <buffer> <Tab> <C-O>:call xolox#notes#indent_list(1, line('.'), line('.'))<CR>
+    imap <buffer> <CR> <Plug>OrgNewHeadingBelowInsert
+    imap <buffer> <S-Tab> <C-O>:call xolox#notes#indent_list(-1, line('.'), line('.'))<CR> 
+
 endfunction
 
 let g:utl_cfg_hdl_scm_http_system = "silent !open -a Firefox '%u#%f'"
@@ -236,7 +264,8 @@ endfunction
 function! CsLoad(release, build)
     let release = a:release
     let build = a:build
-    let c_path = "/afs/rchland.ibm.com/usr5/phypbld/afw/".release."/builds/".build."/cscope/afwp"
+    "let c_path = "/afs/rchland.ibm.com/usr5/phypbld/afw/".release."/builds/".build."/cscope/afwp"
+    let c_path = "/home/jfouk/Development/cscope/".release
     execute "cs add ". c_path
 endfunction
 command! -nargs=* Csload call CsLoad(<f-args>)
@@ -398,6 +427,10 @@ set undofile
 set undolevels=1000 "maximum number of changes that can be undone
 set undoreload=10000 "maximum number lines to save for undo on a buffer reload
 
+" Notes.Vim
+let g:notes_directories = ['/home/jfouk/Development/Notes_Vim']
+let g:notes_suffix = '.note'
+
 function! s:find_root()
     for vcs in ['.mark','.git', 'src']
         " look a couple directories up
@@ -542,6 +575,7 @@ endfunction
 "endfunction
 
 function! s:btags_sink(line)
+  normal! m'
   let lines = split(a:line, "\t")
   for line in lines
       let arr = split(line, ":")
@@ -661,13 +695,15 @@ function! s:afw_source(version)
     "let lines = split(system('cat '.expand('%:S').' | ag "^\*"'), "\n")
     "let lines = getline(1,"$")
     let s:afw_version=a:version
-    let lines = split(system('cat ~/.vim/.projectcache/'.a:version.'_LATEST'), "\n")
+    "let lines = split(system('cat ~/.vim/.projectcache/'.a:version.'_LATEST'), "\n")
+    let lines = split(system('cat /home/jfouk/Development/cscope/'.a:version.'/fzf.files'), "\n")
     return map(lines, 'substitute(v:val,"\*\\( \\)\\@!","  ","g")')
     "return lines
 endfunction
 
 function! s:afw_sink(file)
-    execute "edit /afs/rchland.ibm.com/usr5/phypbld/afw/".s:afw_version."/builds/LATEST/src/". a:file 
+    "execute "edit /afs/rchland.ibm.com/usr5/phypbld/afw/".s:afw_version."/builds/LATEST/src/". a:file 
+    execute "edit /home/jfouk/Development/cscope/".s:afw_version."/gitroot/src/". a:file 
 endfunction
 
 function! s:afw_files(version)
@@ -684,4 +720,7 @@ function! s:afw_files(version)
 endfunction
 command! -nargs=* AfwFiles call s:afw_files(<q-args>)
 
-
+let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+" change tablemode prefix
+let g:table_mode_map_prefix = '<Leader>m'
+"let g:ycm_add_preview_to_completeopt = 1
