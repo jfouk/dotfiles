@@ -37,6 +37,10 @@ fi
 if [ ! -f $HOME/.bash_aliases ]; then
     ln -s $SETUP/bash/.bash_aliases $HOME/.bash_aliases
 fi
+if [ ! -f $HOME/.bash_functions ]; then
+    ln -s $SETUP/bash/.bash_functions $HOME/.bash_functions
+fi
+
 #---------------- Link Config Files ----------------
 #link config files to home directory if files do not already exist
 if [ ! -d $HOME/.tmux ]; then
@@ -149,13 +153,14 @@ if [ ! -d $HOME/.vim/bundle/Vundle.vim ]; then
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
 
+# instal wsltty
 #urxvt
-if [ ! -f $HOME/.Xresources ]; then
-    echo "Linking .Xresources and .Xdefaults"
-    ln -s $SETUP/urxvt/.Xresources $HOME/.Xresources
-    ln -s $HOME/.Xresources $HOME/.Xdefaults
-    sudo apt-get install x11-xserver-utils
-fi
+#if [ ! -f $HOME/.Xresources ]; then
+    #echo "Linking .Xresources and .Xdefaults"
+    #ln -s $SETUP/urxvt/.Xresources $HOME/.Xresources
+    #ln -s $HOME/.Xresources $HOME/.Xdefaults
+    #sudo apt-get install x11-xserver-utils
+#fi
 
 #zshrc/bashrc 
 #source "$HOME/.vim/bundle/gruvbox/gruvbox_256palette.sh"
