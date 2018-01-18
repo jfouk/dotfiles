@@ -74,7 +74,7 @@ jonafs="/afs/rchland.ibm.com/usr1/joncfouk"
 gsasri="/gsa/rchgsa/projects/s/sriov"
 jbox="/afs/rchland.ibm.com/usr1/joncfouk/ode/afw/"
 
-alias vtty-fsp='/afs/rch/usr6/d4a3/tools/vtty-fsp'
+alias vtty-fsp='/afs/rchland.ibm.com/usr6/d4a3/tools/vtty-fsp'
 alias sys_capture='/afs/rchland.ibm.com/usr6/d4a3/tools/sys_capture'
 
 function gbdir()
@@ -230,6 +230,11 @@ complete -F _goSandBox gsb
 function updateCache()
 {
     if [ $1 ]; then
+        #check last touched date
+        #file=~/.vim/.projectcache/${1}_LATEST
+        #file_info=( $(ls -lat $file) )
+        #echo "${file_info[5]} ${file_info[6]} ${file_info[7]}"
+
         find /afs/rchland.ibm.com/usr5/phypbld/afw/$1/builds/LATEST/src -iname *.c -printf '%P\n' -or -iname *.h -printf '%P\n' > ~/.vim/.projectcache/${1}_LATEST
     else
         echo "Please enter in afw version"
@@ -256,7 +261,11 @@ function vimProject()
                 if [[ ${temp[7]} =~ ${x##*/} ]]; then 
                     afwVersion=${x##*/}
                     echo "Starting vim with $afwVersion!"
-                    updateCache $afwVersion &
+                    #updateCache $afwVersion &
+                    # check that it's been a day since last update, else don't update
+                    #if ! checkLastModified /home/jfouk/Development/cscope/$afwVersion/fzf.files 86400; then
+                        #( updateLocalBB & )
+                    #fi
                     vimx -c "Pinit $afwVersion LATEST" $@
                     return
                 fi
@@ -269,6 +278,155 @@ function vimProject()
 }
 alias vim="vimProject"
 
+# checks if it has been $2 seconds since the file was modified
+function checkLastModified()
+{
+    #checkLastModified file #seconds
+    curTime=$(date +'%s')
+    if [ $1 ]; then
+        if [ $2 ]; then
+            fileTime=$(stat -c %Y $1)
+            difference=$((curTime-fileTime))
+            if [ "$difference" -lt "$2" ]; then
+                return 0
+            else
+                return 1
+            fi
+        fi
+    fi
+    return 1
+}
+function updateLocalBB()
+{
+    curDir="$PWD"
+    local baseDir="/home/jfouk/Development/cscope"
+    for releases in 868 910 920
+    do
+        local bbDir="$baseDir/afw$releases/gitroot/"
+        if [ -d "$bbDir" ]; then
+            echo "Updating $bbDir..."
+            cd $bbDir
+            git pull
+            buildLocalCscope afw$releases
+            buildLocalFzfList afw$releases
+            cd $curDir
+        else
+            echo "$bbDir does NOT exist!"
+            buildLocalBB afw$releases
+        fi
+        #cd $baseDir/$releases/
+    done
+}
+
+function buildLocalBB()
+{
+    #buildLocalBB release
+    local curDir=$PWD
+    if [ $1 ]; then
+        local baseDir="/home/jfouk/Development/cscope/$1"
+        local afsDir="/afs/rchland.ibm.com/usr5/phypbld/afw/$1/git/gitroot/"
+        if [ -d "$baseDir/gitroot" ]; then
+            echo "$1 dir already created, don't do anything.."
+        else
+            mkdir $baseDir
+            cd $baseDir
+            echo "Cloning $afsDir..."
+            git clone $afsDir
+            buildLocalCscope $1
+            buildLocalFzfList $1
+            cd $curDir
+        fi
+    else
+        echo "Please enter in afw release!"
+    fi
+}
+
+function buildLocalCscope()
+{
+    local curDir=$PWD
+    if [ $1 ]; then
+        local baseDir="/home/jfouk/Development/cscope/$1"
+        local gitRoot="$baseDir/gitroot"
+        if [ -d $gitRoot ]; then
+            echo "Building cscope..."
+            find $gitRoot/src -type f \( -name *.c -o -name *.h -o -name *.C -o -name *.H  -o -name *.ode  -o -name *.mk -o -name *.m4 \) > $baseDir/cscope.files
+            cd $baseDir
+            cscope -b -q -k
+            cd $curDir
+        fi
+    else
+        echo "Please enter in afw release!"
+    fi
+}
+
+function buildLocalFzfList()
+{
+    local curDir=$PWD
+    if [ $1 ]; then
+        local baseDir="/home/jfouk/Development/cscope/$1"
+        local gitRoot="$baseDir/gitroot"
+        if [ -d $gitRoot ]; then
+            echo "Building List of files for FZF..."
+            cd $gitRoot/src
+            find . -type f \( -name *.c -o -name *.h -o -name *.C -o -name *.H  -o -name *.ode  -o -name *.mk -o -name *.m4 \) -printf '%P\n' > $baseDir/fzf.files
+            cd $curDir
+        fi
+    else
+        echo "Please enter in afw release!"
+    fi
+}
+
+#make vtty-fsp faster
+function fsp()
+{
+    machine=$(getMachineUrl $1 $2)
+    if [ "$machine" != "NULL" ]; then
+        local vttyFspCmd=$(/afs/rchland.ibm.com/usr6/d4a3/tools/vtty-fsp $machine -session 0 -setuponly -timeout 0)
+        telnet $machine 30002
+    fi
+}
+
+function syscap()
+{
+    machine=$(getMachineUrl $1 $2)
+    if [ "$machine" != "NULL" ]; then
+        sys_capture $machine
+    fi
+}
+alias sys="syscap"
+
+function myssh()
+{
+    if [ $1 ]; then
+        case $1 in
+            *hmc*)
+                number=$(echo $1 | sed -n "s/^.*hmc\([0-9]\)/\1/p")
+                machine=$(getMachineUrl sriovhmc$number $2)
+                ssh hscroot@$machine -X -k -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+                ;;
+            z*)
+                machine=$(getMachineUrl $1 $2)
+                ssh root@$machine -X -k -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+                ;;
+                
+        esac
+        fi
+}
+function getMachineUrl()
+{
+    #set domain
+    loc="rch"
+    if [ $2 ]; then
+        loc=$2
+    fi
+    if [ $1 ]; then
+        machine="$1.$loc.stglabs.ibm.com"
+        echo $machine
+    else
+        echo "Please enter a machine name!" >&2
+        echo NULL
+    fi
+}
 
 alias vi="vimx"
 alias vims="vimx --servername "
@@ -294,9 +452,18 @@ export FZF_TMUX=0
 
 export ORG_NOTES="$HOME/Development/Notes"
 alias gitl="git log --graph --decorate --oneline --all"
+source "/etc/profile.d/goenv.sh"
+export PATH="$PATH:$GOPATH/bin"
 
 # set capslock to ctrl when used in conjunction with another key, and esc when pressed by itself
 setxkbmap -option 'caps:ctrl_modifier'
 #xcape -e 'Caps_Lock=Escape'
-
+if [ ! $(ps ax | grep 'watch -n 3600 /home/jfouk/logon.sh' | wc -l) -gt 1 ]
+then
+    watch -n 3600 /home/jfouk/logon.sh &>/dev/null &
+fi
+if [ ! $(ps ax | grep 'watch -n 86400 /home/jfouk/Scripts/buildLocalBB.sh' | wc -l) -gt 1 ]
+then
+    watch -n 86400 /home/jfouk/Scripts/buildLocalBB.sh &>/dev/null &
+fi
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
