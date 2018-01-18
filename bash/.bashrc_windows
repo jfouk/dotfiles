@@ -91,6 +91,14 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+# for mac only
+PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+if [ -x /usr/local/opt/coreutils/libexec/gnubin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+fi
+#end mac only
 # some more ls aliases
 alias ll='ls -alF'
 alias la='ls -A'
